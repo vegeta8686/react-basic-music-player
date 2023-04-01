@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Login } from './Login';
+import { Dashboard } from './Dashboard';
+
+export const getTokenFromUrl = () => {
+    return window.location.hash
+        .substring(1)
+        .split('&')
+        .reduce((initial, item) => {
+            let parts = item.split('=');
+            initial[parts[0]] = parts[1];
+            return initial;
+        }, {});
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const accessToken = getTokenFromUrl().access_token;
+    return accessToken ? <Dashboard accessToken={accessToken} /> : <Login />;
 }
 
 export default App;
